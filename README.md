@@ -24,7 +24,7 @@ Sistem ini adalah sebuah **Sistem Manajemen Bisnis Ayam Potong** yang dirancang 
 
 ## Teknologi yang Digunakan
 - **Bahasa Pemrograman**: C++
-- **Lingkungan Pengembangan**: Kompiler C++ seperti GCC dan Visual Studio beserta Kompiler c++ ``OnlineGDB.com`` .
+- **Lingkungan Pengembangan**: Kompiler C++ seperti GCC dan Visual Studio beserta Kompiler c++ ``OnlineGDB.com``
 
 ## Struktur Program
 1. **Kelas Utama**:
