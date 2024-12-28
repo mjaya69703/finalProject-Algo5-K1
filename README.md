@@ -24,8 +24,7 @@ Sistem ini adalah sebuah **Sistem Manajemen Bisnis Ayam Potong** yang dirancang 
 
 ## Teknologi yang Digunakan
 - **Bahasa Pemrograman**: C++
-- **Paradigma**: Pemrograman Berorientasi Objek (OOP)
-- **Lingkungan Pengembangan**: Kompiler C++ seperti GCC atau Visual Studio.
+- **Lingkungan Pengembangan**: Kompiler C++ seperti GCC dan Visual Studio beserta Kompiler c++ ``OnlineGDB.com`` .
 
 ## Struktur Program
 1. **Kelas Utama**:
@@ -47,17 +46,15 @@ Sistem ini adalah sebuah **Sistem Manajemen Bisnis Ayam Potong** yang dirancang 
 ## Cara Menjalankan Program Pada Compiler Online
 1. Buka browser favorit anda dan kunjungi situs OnlineGDB
    ```
-   g++ -o main main.cpp
+   https://www.onlinegdb.com/online_c++_compiler
    ```
+2. Buka file main.cpp > Copy semua script pada main.cpp ke bagian script yang disediakan
 
-2. Jalankan program:
-   ```
-   ./main
-   ```
+3. Jalankan program dengan mengklik tombol Run di pojok kiri atas
 
-3. Pilih login sebagai **Pemilik** atau **Kasir** sesuai kebutuhan.
+4. Pilih login sebagai **Pemilik** atau **Kasir** sesuai kebutuhan.
 
-4. Gunakan menu yang tersedia untuk mengelola stok dan penjualan.
+5. Gunakan menu yang tersedia untuk mengelola stok dan penjualan.
 
 ## Cara Menjalankan Program Pada Device Pribadi
 1. Kompilasi file sumber menggunakan perintah:
@@ -91,4 +88,4 @@ Sistem ini adalah sebuah **Sistem Manajemen Bisnis Ayam Potong** yang dirancang 
 
 ---
 
-> Proyek ini dikembangkan sebagai bagian dari tugas akhir mata kuliah **Algoritma dan Pemrograman Dasar**. Sistem ini diharapkan dapat memberikan solusi praktis bagi UMKM dalam mengelola bisnis ayam potong mereka.
+> Proyek ini dikembangkan sebagai bagian dari tugas akhir mata kuliah **Algoritma dan Pemrograman Dasar** Semester 1 di Universitas Cakrawala. Sistem ini diharapkan dapat memberikan solusi praktis bagi UMKM dalam mengelola bisnis ayam potong mereka.
