@@ -1,84 +1,73 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <algorithm>
+#include <ctime>
 #include <iomanip>
+#include <cstdlib>
 
 using namespace std;
 
+class StokAyam {
+public:
+    string jenis;
+    float berat;
+    float harga;
+    int stok;
+
+    StokAyam(string j, float b, float h, int s) : jenis(j), berat(b), harga(h), stok(s) {}
+};
+
+class Penjualan {
+public:
+    string jenisAyam;
+    float berat;
+    float totalHarga;
+
+    Penjualan(string j, float b, float t) : jenisAyam(j), berat(b), totalHarga(t) {}
+};
+
 class ManajemenAyam {
 private:
-    struct StokAyam {
-        string jenis;
-        float berat;
-        float harga;
-        int stok;
-        StokAyam *next;
-    };
-
-    struct Penjualan {
-        string jenisAyam;
-        float berat;
-        float totalHarga;
-        Penjualan *next;
-    };
-
-    StokAyam *headStok;
-    Penjualan *headPenjualan;
+    vector<StokAyam> inventaris;
+    vector<Penjualan> penjualanHarian;
 
 public:
-    ManajemenAyam() : headStok(nullptr), headPenjualan(nullptr) {}
-
-    ~ManajemenAyam() {
-        while (headStok) {
-            StokAyam *temp = headStok;
-            headStok = headStok->next;
-            delete temp;
-        }
-
-        while (headPenjualan) {
-            Penjualan *temp = headPenjualan;
-            headPenjualan = headPenjualan->next;
-            delete temp;
-        }
-    }
-
-    void tambahStok(const string &jenisAyam, float beratAyam, float hargaAyam, int jumlahStokAyam) {
-        StokAyam *baru = new StokAyam{jenisAyam, beratAyam, hargaAyam, jumlahStokAyam, headStok};
-        headStok = baru;
+    void tambahStok(string jenis, float berat, float harga, int stok) {
+        inventaris.emplace_back(jenis, berat, harga, stok);
         cout << "Stok berhasil ditambahkan.\n";
     }
 
     void tampilkanStok() {
         cout << "\nDaftar Stok Ayam:\n";
         cout << left << setw(15) << "Jenis" << setw(10) << "Berat" << setw(10) << "Harga" << "Stok" << endl;
-        StokAyam *current = headStok;
-        while (current) {
-            cout << left << setw(15) << current->jenis << setw(10) << current->berat << setw(10) << current->harga << current->stok << endl;
-            current = current->next;
+        for (const auto &ayam : inventaris) {
+            cout << left << setw(15) << ayam.jenis << setw(10) << ayam.berat << setw(10) << ayam.harga << ayam.stok << endl;
         }
     }
 
     void editStok() {
-        if (!headStok) {
+        if (inventaris.empty()) {
             cout << "Tidak ada stok ayam tersedia untuk diedit.\n";
             return;
         }
 
-        tampilkanStok();
-
-        string jenisAyam;
-        cout << "Masukkan jenis ayam yang ingin diedit: ";
-        cin.ignore();
-        getline(cin, jenisAyam);
-
-        StokAyam *current = headStok;
-        while (current && current->jenis != jenisAyam) {
-            current = current->next;
+        cout << "\nDaftar Stok Ayam:\n";
+        for (size_t i = 0; i < inventaris.size(); ++i) {
+            cout << i + 1 << ". " << inventaris[i].jenis << " " << inventaris[i].berat << "kg (Stok: " << inventaris[i].stok << ")\n";
         }
 
-        if (!current) {
-            cout << "Jenis ayam tidak ditemukan.\n";
+        int pilihan;
+        cout << "Pilih nomor stok ayam yang ingin diedit: ";
+        cin >> pilihan;
+
+        if (pilihan < 1 || pilihan > inventaris.size()) {
+            cout << "Pilihan tidak valid.\n";
             return;
         }
+
+        StokAyam &ayamDipilih = inventaris[pilihan - 1];
+        cout << "Edit data untuk " << ayamDipilih.jenis << ":\n";
 
         float berat, harga;
         int stok;
@@ -89,49 +78,46 @@ public:
         cout << "Masukkan jumlah stok baru: ";
         cin >> stok;
 
-        current->berat = berat;
-        current->harga = harga;
-        current->stok = stok;
+        ayamDipilih.berat = berat;
+        ayamDipilih.harga = harga;
+        ayamDipilih.stok = stok;
 
         cout << "Stok berhasil diperbarui.\n";
     }
 
     void prosesPenjualan() {
-        if (!headStok) {
+        if (inventaris.empty()) {
             cout << "Tidak ada stok ayam tersedia.\n";
             return;
         }
 
-        tampilkanStok();
-
-        string jenisAyam;
-        float berat;
-        cout << "Masukkan jenis ayam yang dijual: ";
-        cin.ignore();
-        getline(cin, jenisAyam);
-        cout << "Masukkan berat yang dijual (kg): ";
-        cin >> berat;
-
-        StokAyam *current = headStok;
-        while (current && current->jenis != jenisAyam) {
-            current = current->next;
+        cout << "\nStok Tersedia:\n";
+        for (size_t i = 0; i < inventaris.size(); ++i) {
+            cout << i + 1 << ". " << inventaris[i].jenis << " " << inventaris[i].berat << "kg (Stok: " << inventaris[i].stok << ")\n";
         }
 
-        if (!current) {
-            cout << "Jenis ayam tidak ditemukan.\n";
+        int pilihan;
+        cout << "Pilih jenis ayam (masukkan nomor): ";
+        cin >> pilihan;
+
+        if (pilihan < 1 || pilihan > inventaris.size()) {
+            cout << "Pilihan tidak valid.\n";
             return;
         }
 
-        if (berat > current->stok) {
+        StokAyam &ayamDipilih = inventaris[pilihan - 1];
+        float berat;
+        cout << "Masukkan berat yang dijual (kg): ";
+        cin >> berat;
+
+        if (berat > ayamDipilih.stok) {
             cout << "Stok tidak mencukupi.\n";
             return;
         }
 
-        float totalHarga = berat * current->harga;
-        Penjualan *baru = new Penjualan{jenisAyam, berat, totalHarga, headPenjualan};
-        headPenjualan = baru;
-
-        current->stok -= berat;
+        float totalHarga = berat * ayamDipilih.harga;
+        penjualanHarian.emplace_back(ayamDipilih.jenis, berat, totalHarga);
+        ayamDipilih.stok -= berat;
 
         cout << "Total harga: Rp " << totalHarga << endl;
         cout << "Penjualan berhasil diproses.\n";
@@ -143,13 +129,10 @@ public:
 
         cout << "\nLaporan Penjualan Harian:\n";
         cout << left << setw(15) << "Jenis Ayam" << setw(10) << "Berat" << "Total Harga" << endl;
-
-        Penjualan *current = headPenjualan;
-        while (current) {
-            cout << left << setw(15) << current->jenisAyam << setw(10) << current->berat << current->totalHarga << endl;
-            totalBerat += current->berat;
-            totalPenghasilan += current->totalHarga;
-            current = current->next;
+        for (const auto &transaksi : penjualanHarian) {
+            cout << left << setw(15) << transaksi.jenisAyam << setw(10) << transaksi.berat << transaksi.totalHarga << endl;
+            totalBerat += transaksi.berat;
+            totalPenghasilan += transaksi.totalHarga;
         }
 
         cout << "\nRingkasan Penjualan:\n";
